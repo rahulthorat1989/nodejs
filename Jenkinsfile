@@ -41,13 +41,23 @@ pipeline {
     }
    
     // Uploading Docker images into AWS ECR
+	    
+	     //stage('Pushing to ECR') {
+     //steps{  
+       //  script {
+	//		docker.withRegistry("https://" + REPOSITORY_URI, "ecr:${AWS_DEFAULT_REGION}:" + registryCredential) {
+         //           	dockerImage.push()
+           //     	}
+         //}
+        //}
+      //}
+	    
     stage('Pushing to ECR') {
      steps{  
-         script {
-			docker.withRegistry("https://" + REPOSITORY_URI, "ecr:${AWS_DEFAULT_REGION}:" + registryCredential) {
-                    	dockerImage.push()
-                	}
-         }
+         sh "aws ecr get-login --no-include-email --region ${AWS_DEFAULT_REGION} | sh"
+	 sh "docker push ${REPOSITORY_URI}:${commit_id}"
+        // Clean up
+        sh "docker rmi -f ${REPOSITORY_URI}:${commit_id}"
         }
       }
       
