@@ -1,9 +1,15 @@
 pipeline {
-    agent any
+     agent {
+        node {
+        
+       label 'slave'
+      
+           }
+    }
     environment {
         AWS_ACCOUNT_ID="306272608230"
         AWS_DEFAULT_REGION="us-east-2" 
-	CLUSTER_NAME="First-CICD
+	CLUSTER_NAME="First-CICD"
 	SERVICE_NAME="nodejs-container-service"
 	TASK_DEFINITION_NAME="first-run-task-defination"
 	DESIRED_COUNT="1"
